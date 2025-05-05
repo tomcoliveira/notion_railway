@@ -59,7 +59,6 @@ def notion_authorize():
 @app.route("/notion/oauth-callback")
 def notion_oauth_callback():
     """Handles the callback from Notion after authorization."""
-    global notion_access_token, notion_workspace_id, notion_workspace_name, notion_workspace_icon, notion_bot_id
 
     error = request.args.get("error")
     if error:
@@ -95,16 +94,15 @@ def notion_oauth_callback():
         notion_bot_id = token_data.get("bot_id")
 
         if not notion_access_token:
-             return "Access token not found in Notion response.", 500
+            return "Access token not found in Notion response.", 500
+        # Store token in session
+        session["notion_access_token"] = notion_access_token
+        # Store other potentially useful info in session too
+        session["notion_workspace_id"] = notion_workspace_id
+        session["notion_workspace_name"] = notion_workspace_name
+        session["notion_bot_id"] = notion_bot_id
 
-    # Store token in session
-    session["notion_access_token"] = notion_access_token
-    # Store other potentially useful info in session too
-    session["notion_workspace_id"] = notion_workspace_id
-    session["notion_workspace_name"] = notion_workspace_name
-    session["notion_bot_id"] = notion_bot_id
-
-    print(f"Access Token received and stored in session: {session["notion_access_token"][:10]}...")
+        print(f"Access Token received and stored in session: {session['notion_access_token'][:10]}...")
 
         return jsonify({
             "message": "Notion authorization successful! Token obtained.",
