@@ -38,15 +38,12 @@ notion_bot_id = None
 
 # --- Helper Function to get Notion Client ---
 def get_notion_client():
-    """Returns an initialized Notion client if token exists."""
-    global notion_access_token
-    if not notion_access_token:
-        # In v1, we might need to redirect to auth or return an error
-        # For now, let's assume the token is obtained before calling endpoints
-        # raise Exception("Notion token not available. Please authorize first.")
-        print("Warning: Notion token not available.")
+    """Returns an initialized Notion client if token exists in session."""
+    access_token = session.get("notion_access_token") # Get from session
+    if not access_token:
+        print("Warning: Notion token not available in session.")
         return None
-    return Client(auth=notion_access_token)
+    return Client(auth=access_token)
 
 # --- OAuth Routes ---
 @app.route("/notion/authorize")
@@ -100,9 +97,14 @@ def notion_oauth_callback():
         if not notion_access_token:
              return "Access token not found in Notion response.", 500
 
-        print(f"Access Token received and stored (globally): {notion_access_token[:10]}...")
-        # Store token in session as well, maybe useful later
-        session['notion_access_token'] = notion_access_token
+    # Store token in session
+    session["notion_access_token"] = notion_access_token
+    # Store other potentially useful info in session too
+    session["notion_workspace_id"] = notion_workspace_id
+    session["notion_workspace_name"] = notion_workspace_name
+    session["notion_bot_id"] = notion_bot_id
+
+    print(f"Access Token received and stored in session: {session["notion_access_token"][:10]}...")
 
         return jsonify({
             "message": "Notion authorization successful! Token obtained.",
@@ -232,4 +234,21 @@ if __name__ == "__main__":
     # Use 0.0.0.0 to be accessible externally (like on Railway)
     # Use port 8080 as a common practice for web apps
     app.run(host="0.0.0.0", port=8080, debug=True) # Debug=True for development
+
+
+
+# --- Debug Endpoint ---
+@app.route("/notion/check-token")
+def notion_check_token():
+    """Checks if the Notion token exists in the current session."""
+    access_token = session.get("notion_access_token")
+    if access_token:
+        return jsonify({
+            "status": "Token found in session!",
+            "token_start": access_token[:10] + "...",
+            "workspace_id": session.get("notion_workspace_id"),
+            "workspace_name": session.get("notion_workspace_name")
+        })
+    else:
+        return jsonify({"status": "Token NOT found in session."}), 404
 
