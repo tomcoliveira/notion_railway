@@ -2,3 +2,5 @@ Flask
 notion-sdk
 
 gunicorn
+
+requests
