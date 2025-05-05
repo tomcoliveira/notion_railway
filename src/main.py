@@ -12,7 +12,18 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev_secret_key")
 NOTION_CLIENT_ID = os.environ.get("NOTION_CLIENT_ID")
 NOTION_CLIENT_SECRET = os.environ.get("NOTION_CLIENT_SECRET")
 # Use the Railway variable if available, otherwise default to localhost
-NOTION_REDIRECT_URI = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "http://localhost:8080") + "/notion/oauth-callback"
+# Ensure https:// is prepended to the Railway domain
+railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN")
+if railway_domain:
+    # Prepend https:// if not already present (unlikely for Railway var, but safe)
+    if not railway_domain.startswith(("http://", "https://")):
+        base_url = "https://" + railway_domain
+    else:
+        base_url = railway_domain # Assume it includes the protocol if it starts with http/https
+else:
+    base_url = "http://localhost:8080" # Default for local dev
+
+NOTION_REDIRECT_URI = base_url + "/notion/oauth-callback"
 
 NOTION_AUTH_URL = "https://api.notion.com/v1/oauth/authorize"
 NOTION_TOKEN_URL = "https://api.notion.com/v1/oauth/token"
