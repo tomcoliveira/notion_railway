@@ -1,5 +1,5 @@
 Flask
-notion-sdk
+notion-client
 
 gunicorn
 
