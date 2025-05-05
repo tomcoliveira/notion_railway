@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>Chat IA</h1>
+            <div class="header-controls">
+                <span id="username-display">Usuário: {{ session.username }}</span>
+                <select id="model-select">
+                    <option value="gpt-4o" selected>GPT-4o</option>
+                    <!-- Adicionar outros modelos reais quando integrados -->
+                    <!-- <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option> -->
+                    <!-- <option value="gemini-pro">Gemini Pro</option> -->
+                </select>
+                <a href="{{ url_for('logout') }}" class="logout-button">Sair</a>
+            </div>
+        </header>
+
+        <div id="chat-history" class="chat-history">
+            <!-- Mensagens serão carregadas aqui via JS -->
+            <div class="message system-message">Conectado. Carregando histórico...</div>
+        </div>
+
+        <div id="loading-indicator" class="loading-indicator" style="display: none;">
+            <span></span><span></span><span></span>
+        </div>
+
+        <footer class="chat-input-area">
+            <div class="input-wrapper">
+                <textarea id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+                <input type="file" id="file-input" style="display: none;">
+                <button id="attach-button" title="Anexar arquivo">📎</button>
+                <button id="send-button" title="Enviar mensagem">➤</button>
+            </div>
+            <div id="file-preview" class="file-preview"></div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+

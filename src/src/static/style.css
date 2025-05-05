@@ -1,0 +1,435 @@
+/* --- Reset Básico e Configurações Globais --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Satoshi', sans-serif;
+    background-color: #000000; /* Fundo 100% preto */
+    color: #e0e0e0; /* Cor de texto padrão clara */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* --- Estilos de Autenticação (index.html) --- */
+.auth-container {
+    background-color: #1a1a1a; /* Um cinza muito escuro para contraste sutil */
+    padding: 40px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-container h1 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.auth-container h2 {
+    margin-bottom: 25px;
+    color: #f0f0f0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #cccccc;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #333333;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+.auth-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a4a4a;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-container button[type="submit"]:hover {
+    background-color: #666666;
+}
+
+.auth-container p {
+    margin-top: 20px;
+    color: #aaaaaa;
+}
+
+.auth-container a {
+    color: #bbbbbb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens Flash */
+.flashes {
+    list-style: none;
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+
+.flashes li {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.flashes .success {
+    background-color: #2a4a2a;
+    color: #d4ffd4;
+}
+
+.flashes .error {
+    background-color: #4a2a2a;
+    color: #ffd4d4;
+}
+
+.flashes .warning {
+    background-color: #4a4a2a;
+    color: #ffffd4;
+}
+
+.flashes .info {
+    background-color: #2a2a4a;
+    color: #d4d4ff;
+}
+
+/* --- Estilos do Chat (chat.html) --- */
+.chat-container {
+    width: 100%;
+    max-width: 800px; /* Ou a largura desejada */
+    height: 95vh; /* Altura quase total da viewport */
+    background-color: #000000;
+    border: 1px solid #333; /* Borda sutil para delimitar */
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita que conteúdo transborde */
+    position: relative; /* Para posicionar o loading indicator */
+}
+
+.chat-header {
+    background-color: #1a1a1a;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0; /* Impede que o header encolha */
+}
+
+.chat-header h1 {
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#username-display {
+    color: #cccccc;
+    font-size: 0.9rem;
+}
+
+#model-select {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.logout-button {
+    color: #aaaaaa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #444;
+    color: #ffffff;
+}
+
+.chat-history {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    overflow-y: auto; /* Habilita rolagem vertical */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    position: relative; /* Para timestamp */
+}
+
+.message.user {
+    background-color: #2a2a2a; /* Cinza escuro para usuário */
+    color: #e0e0e0;
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+}
+
+.message.ai {
+    background-color: #1f1f1f; /* Cinza um pouco mais escuro para IA */
+    color: #d0d0d0;
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+}
+
+.message.system-message {
+    background-color: #2a2a4a;
+    color: #d4d4ff;
+    align-self: center;
+    max-width: 60%;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.message.error-message {
+    background-color: #4a2a2a;
+    color: #ffd4d4;
+    align-self: center;
+    max-width: 80%;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.message .timestamp {
+    display: block;
+    font-size: 0.75rem;
+    color: #777777;
+    margin-top: 5px;
+    text-align: right;
+}
+
+.message.ai .timestamp {
+    text-align: left;
+}
+
+.message .model-info {
+    display: block;
+    font-size: 0.7rem;
+    color: #888888;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.message.ai .model-info {
+    text-align: left;
+}
+
+.message.user .model-info {
+    display: none; /* Não mostra modelo para msg do usuário */
+}
+
+.message a {
+    color: #8ab4f8; /* Cor de link sugerida pelo Google */
+    text-decoration: underline;
+}
+
+.message pre {
+    background-color: #111;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #c5c8c6; /* Cor de texto para código */
+    white-space: pre-wrap; /* Quebra linha em blocos de código */
+    word-wrap: break-word;
+}
+
+.message code:not(pre code) {
+    font-family: monospace;
+    background-color: #111;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.chat-input-area {
+    padding: 15px 20px;
+    border-top: 1px solid #333;
+    background-color: #1a1a1a;
+    flex-shrink: 0; /* Impede que o footer encolha */
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end; /* Alinha itens na base */
+    gap: 10px;
+}
+
+#message-input {
+    flex-grow: 1;
+    background-color: #333333;
+    border: 1px solid #555555;
+    border-radius: 20px; /* Bordas arredondadas */
+    padding: 10px 15px;
+    color: #e0e0e0;
+    font-size: 1rem;
+    resize: none; /* Impede redimensionamento manual */
+    min-height: 44px; /* Altura inicial correspondente aos botões */
+    max-height: 150px; /* Limita altura máxima */
+    overflow-y: auto; /* Scroll se necessário */
+    line-height: 1.4;
+}
+
+#attach-button,
+#send-button {
+    background: none;
+    border: none;
+    color: #aaaaaa;
+    font-size: 1.5rem; /* Tamanho do ícone */
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+    height: 44px; /* Alinha altura com input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#attach-button:hover,
+#send-button:hover {
+    color: #ffffff;
+}
+
+#send-button:disabled {
+    color: #555;
+    cursor: not-allowed;
+}
+
+.file-preview {
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    margin-top: 5px;
+    padding-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex; /* Para alinhar o botão de remover */
+    align-items: center;
+    gap: 5px;
+}
+
+.file-preview span {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.remove-file-button {
+    background: none;
+    border: none;
+    color: #ff6b6b; /* Vermelho para remover */
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0 5px;
+}
+
+.remove-file-button:hover {
+    color: #ff4f4f;
+}
+
+/* Indicador de Carregamento */
+.loading-indicator {
+    position: absolute;
+    bottom: 75px; /* Ajuste conforme necessário para ficar acima da área de input */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    padding: 5px 10px;
+    background-color: rgba(42, 42, 42, 0.8);
+    border-radius: 10px;
+}
+
+.loading-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: #aaa;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loading-indicator span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.loading-indicator span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1.0);
+    }
+}
+
+/* Scrollbar customizada (opcional, para Webkit) */
+.chat-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-history::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.chat-history::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+    border: 2px solid #1a1a1a;
+}
+
