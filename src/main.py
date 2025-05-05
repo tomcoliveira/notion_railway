@@ -250,3 +250,52 @@ def notion_check_token():
     else:
         return jsonify({"status": "Token NOT found in session."}), 404
 
+
+
+
+# --- Temporary Test Endpoint for Creation ---
+@app.route("/notion/test-create-item/<string:database_id>")
+def test_create_item_endpoint(database_id):
+    """Temporary endpoint to test item creation from the browser session."""
+    client = get_notion_client()
+    if not client:
+        return jsonify({"error": "Not authorized. Please go to /notion/authorize first."}), 401
+
+    # Hardcoded test data
+    test_item_title = "Teste API Alcides v1.6"
+    # Assuming the main title property is named "Título"
+    test_properties = {
+        "Título": {
+            "title": [
+                {
+                    "text": {
+                        "content": test_item_title
+                    }
+                }
+            ]
+        }
+    }
+
+    try:
+        print(f"DEBUG: Attempting to create test item '{test_item_title}' in DB {database_id}")
+        new_item = client.pages.create(
+            parent={"database_id": database_id},
+            properties=test_properties
+        )
+        print(f"DEBUG: Test item created successfully: {new_item.get('id')}")
+        return jsonify({
+            "message": f"Successfully created test item '{test_item_title}'!",
+            "item_id": new_item.get('id'),
+            "item_url": new_item.get('url')
+        }), 201
+    except Exception as e:
+        print(f"ERROR creating test item in DB {database_id}: {e}")
+        error_message = str(e)
+        try:
+            error_body = getattr(e, 'body', None)
+            if error_body:
+                error_message = f"{e} - Body: {error_body}"
+        except Exception:
+            pass
+        return jsonify({"error": f"Failed to create test item in Notion database {database_id}", "details": error_message}), 500
+
